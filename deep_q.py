@@ -206,13 +206,13 @@ for episode in range(600):
         obs, reward, done, info = play_one_step(env, obs, epsilon)
         if done:
             break
-    rewards.append(step)  # Not shown in the book
-    if step > best_score:  # Not shown
-        best_weights = model.get_weights()  # Not shown
-        best_score = step  # Not shown
+    rewards.append(step)  
+    if step > best_score: 
+        best_weights = model.get_weights()  
+        best_score = step  
     print("\rEpisode: {}, Steps: {}, eps: {:.3f}".format(
-        episode, step + 1, epsilon), end="")  # Not shown
-    if episode > 50:
+        episode, step + 1, epsilon), end="")  
+    if episode > 50: # Gives the replay buffer time to fill up
         training_step(batch_size)
 
 model.set_weights(best_weights)
