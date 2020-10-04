@@ -107,6 +107,10 @@ replay_memory = deque(maxlen=2000)
     - the next state it reached
     - a Boolean indicating whether the episode ended at the poing (done).
 """
+
+# Sample a random batch of experiences from the replay buffer. 
+# This fuction will return five NumPy arrays corresponding to 
+# the five experience elements. 
 def sample_experiences(batch_size):
     indices = np.random.randint(len(replay_memory), size=batch_size)
     batch = [replay_memory[index] for index in indices]
@@ -115,7 +119,8 @@ def sample_experiences(batch_size):
         for field_index in range(5)]
     return states, actions, rewards, next_states, dones
 
-
+# Create a function that will play a single step using the e-greedy policy. 
+# Store the resulting experience in the replay buffer
 def play_one_step(env, state, epsilon):
     action = epsilon_greedy_policy(state, epsilon)
     next_state, reward, done, info = env.step(action)
