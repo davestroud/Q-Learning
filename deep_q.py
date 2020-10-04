@@ -145,8 +145,12 @@ loss_fn = keras.losses.mean_squared_error
     Next, use the Target Q-Value function to compute the target Q-Value
     for each experiences state-action pair. 
 
-    Next use the DQN to compute the Q-Value for each experienced state-action pair.
-
+    Next, use the DQN to compute the Q-Value for each experienced state-action pair.
+    This results in the DQN outputting the Q-Values for the other possible actions, 
+    not just forhe action that was choden by the agent. Thus, we need to mask out 
+    all of the Q-Values that we don't need. The tf.one_hot() function makes it easy 
+    to convert an array of action indices into such a mask.
+    
 
 
 """
