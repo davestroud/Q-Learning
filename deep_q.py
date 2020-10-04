@@ -91,6 +91,11 @@ def epsilon_greedy_policy(state, epsilon=0):
         return np.argmax(Q_values[0])
 
 
+# we store all of the training experiences of the DQN and 
+# store them in a replay buffer. We will sample a random 
+# training bactch from it at each training iteration. 
+# This helps reduce the correlations between experiences in 
+# a batch. A deque list is used for the process
 replay_memory = deque(maxlen=2000)
 
 
