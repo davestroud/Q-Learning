@@ -127,13 +127,29 @@ def play_one_step(env, state, epsilon):
     replay_memory.append((state, action, reward, next_state, done))
     return next_state, reward, done, info
 
-
+# Define hyperparameters
+# Create optimizer and loss function
 batch_size = 32
 discount_rate = 0.95
 optimizer = keras.optimizers.Adam(lr=1e-3)
 loss_fn = keras.losses.mean_squared_error
 
+"""
+    training_step
 
+    starts by sampling a batch of experiences, then uses the DQN
+    to predict the Q-Value for each possible action in each experiences
+    next state. 
+    Assuming the agent with play optimally, we only keep the maximum Q-Value 
+    for each next state.
+    Next, use the Target Q-Value function to compute the target Q-Value
+    for each experiences state-action pair. 
+
+    Next use the DQN to compute the Q-Value for each experienced state-action pair.
+
+
+
+"""
 def training_step(batch_size):
     experiences = sample_experiences(batch_size)
     states, actions, rewards, next_states, dones = experiences
