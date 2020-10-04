@@ -87,8 +87,8 @@ def epsilon_greedy_policy(state, epsilon=0):
     if np.random.rand() < epsilon:
         return np.random.randint(2)
     else:
-        Q_values = model.predict(state[np.newaxis])
-        return np.argmax(Q_values[0])
+        Q_values = model.predict(state[np.newaxis]) # used to increase dim of existing array by one more dim
+        return np.argmax(Q_values[0]) # Returns indices of max element of array in a particular axis
 
 
 # we store all of the training experiences of the DQN and 
@@ -99,6 +99,14 @@ def epsilon_greedy_policy(state, epsilon=0):
 replay_memory = deque(maxlen=2000)
 
 
+"""
+    Each experience will be composed of five elements
+    - a state
+    - the action the agent took
+    - the resulting reward
+    - the next state it reached
+    - a Boolean indicating whether the episode ended at the poing (done).
+"""
 def sample_experiences(batch_size):
     indices = np.random.randint(len(replay_memory), size=batch_size)
     batch = [replay_memory[index] for index in indices]
