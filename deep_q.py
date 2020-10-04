@@ -93,7 +93,7 @@ def epsilon_greedy_policy(state, epsilon=0):
 
 # we store all of the training experiences of the DQN and 
 # store them in a replay buffer. We will sample a random 
-# training bactch from it at each training iteration. 
+# training batch from it at each training iteration. 
 # This helps reduce the correlations between experiences in 
 # a batch. A deque list is used for the process
 replay_memory = deque(maxlen=2000)
@@ -101,11 +101,11 @@ replay_memory = deque(maxlen=2000)
 
 """
     Each experience will be composed of five elements
-    - a state
-    - the action the agent took
-    - the resulting reward
-    - the next state it reached
-    - a Boolean indicating whether the episode ended at that point (done).
+        - a state
+        - the action the agent took
+        - the resulting reward
+        - the next state it reached
+        - a Boolean indicating whether the episode ended at that point (done).
 """
 
 # Sample a random batch of experiences from the replay buffer. 
@@ -147,11 +147,15 @@ loss_fn = keras.losses.mean_squared_error
 
     Next, use the DQN to compute the Q-Value for each experienced state-action pair.
     This results in the DQN outputting the Q-Values for the other possible actions, 
-    not just forhe action that was choden by the agent. Thus, we need to mask out 
+    not just for the action that was chosen by the agent. Thus, we need to mask out 
     all of the Q-Values that we don't need. The tf.one_hot() function makes it easy 
     to convert an array of action indices into such a mask.
-    
 
+    Next, we compute the lost: it is the mean squared error between the target and 
+    predicted Q-Values for the experienced state-action pairs.
+
+    Finally, we perform a Gradient Descent step to minimize the loss with regard to 
+    the model's trainable variables.
 
 """
 def training_step(batch_size):
