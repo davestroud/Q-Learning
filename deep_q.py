@@ -105,7 +105,7 @@ replay_memory = deque(maxlen=2000)
     - the action the agent took
     - the resulting reward
     - the next state it reached
-    - a Boolean indicating whether the episode ended at the poing (done).
+    - a Boolean indicating whether the episode ended at that point (done).
 """
 
 # Sample a random batch of experiences from the replay buffer. 
