@@ -182,6 +182,23 @@ tf.random.set_seed(42)
 rewards = []
 best_score = 0
 
+
+
+ """
+    Train the model
+        We run 600 episodes, each with a maximum of 200 steps. At each step, we 
+        first compute the epsilon value for the e greedy policy: it goes from 1
+        down to 0.01, linearly, in a bit under 500 episodes
+
+        Next, call the play_one_step function, which will use the e-greedy policy 
+        to pick an action, then execute it and record the experience in the replay buffer.
+
+        If the episode is done, we exit the loop.
+
+        Finally, if we are past the 50th episode, we call the training_step() function
+        to train the model on one branch sample from the replay buffer. 
+ 
+ """
 for episode in range(600):
     obs = env.reset()
     for step in range(200):
