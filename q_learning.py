@@ -73,7 +73,9 @@ for state, actions in enumerate(possible_actions):
 
 gamma = 0.90  # the discount factor
 
-history1 = []  # Not shown in the book (for the figure below)
+# Run the Q-Value Iteration algorithm. The code below runs 
+# an interation of the algorithm.
+history1 = []  
 for iteration in range(50):
     Q_prev = Q_values.copy()
     history1.append(Q_prev)  # Not shown
