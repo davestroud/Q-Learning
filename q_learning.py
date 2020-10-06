@@ -78,7 +78,7 @@ gamma = 0.90  # the discount factor
 history1 = []  
 for iteration in range(50):
     Q_prev = Q_values.copy()
-    history1.append(Q_prev)  # Not shown
+    history1.append(Q_prev)  
     for s in range(3):
         for a in possible_actions[s]:
             Q_values[s, a] = np.sum([
