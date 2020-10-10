@@ -12,3 +12,12 @@ max_hist = 500
 
 
 target = np.array([4])
+
+num_targets = 10
+history = []
+
+model = Sequential()
+model.add(Dense(hidden_size, input_shape=(len(target),), activation='relu'))
+model.add(Dense(hidden_size, activation='relu'))
+model.add(Dense(num_targets, activation='softmax'))
+model.compile(loss='categorical_crossentropy', optimizer=Adam(lr=0.001))
