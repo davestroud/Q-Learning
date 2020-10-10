@@ -52,4 +52,16 @@ def generate_batch(history):
         L.append(model.predict(np.array([cc]))[0])
         L[i][a] = r
     return np.array(M), np.array(L)
-    
+
+for epoch in range(epochs):
+    game_over = False
+    curr = np.zeros(len(target))
+    for x in range(len(target)):
+        if game_over:
+            break
+        if x == len(target) -1: # if last judgement
+            game_over = True
+        guess = guess_number(model, curr)
+        print(guess_number)
+        
+        
