@@ -9,7 +9,7 @@ Q-Learning can only work if the exploration policy explores
 the MDP thoroughly enough. We use the e-greedy policy, e is 
 epsilon:at each step to act randomly with probability. 
 
-The advantage of the e-greedy plicy is that is will spend more
+The advantage of the e-greedy policy is that is will spend more
 and more time exploring interesting parts of the environment, 
 as the Q-Value estimates get better and better, while still 
 spending some time visiting unknown regions of the MDP. It is
@@ -35,4 +35,21 @@ model.add(Dense(num_targets, activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer=Adam(lr=0.001))
 
 def guess_number(model, guess_vec):
-    if np.random.rand() <= epsilon
+    if np.random.rand() <= epsilon:
+        action = np.random.randint(0, num_targets, size=1)[0]
+    else:
+        prob = model.predict(np.array([guess_vec]))[0]
+        print(prob)
+        action = np.random.choice(num_targets, 1, p=prob)[0]
+    return action
+
+def generate_batch(history):
+    M,L = [],[]
+    for i, idx in enumerate(np.random.randint(0, len(history),
+                            size = min(len(history), batch_size))):
+        cc, a, r, _, _ = history[idx]
+        M.append(cc)
+        L.append(model.predict(np.array([cc]))[0])
+        L[i][a] = r
+    return np.array(M), np.array(L)
+    
