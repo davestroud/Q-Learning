@@ -62,6 +62,21 @@ for epoch in range(epochs):
         if x == len(target) -1: # if last judgement
             game_over = True
         guess = guess_number(model, curr)
-        print(guess_number)
+        print(guess)
+        tmpt = [curr.copy(), guess]
+        curr[x] = guess 
+        if game_over:
+            if not np.array_equal(curr, target):
+                reward = 0.0001 # 1/(sum(curr+1)*1000)
+            else:
+                reward = 1000000
+        else: 
+            reward = .0000000000001
+        tmpt.extend([reward, curr.copy(), game_over])
+        history.append(tmpt)
+        M, L = generate_batch(history)
+        model.train_on_batch(M, L)
+        if len(history) > max_hist:
+            del history[0]
         
         
