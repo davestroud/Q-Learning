@@ -63,7 +63,7 @@ transition_probabilities = [  # shape=[s, a, s']
 rewards = [  # shape=[s, a, s']
     [[+10, 0, 0], [0, 0, 0], [0, 0, 0]],
     [[0, 0, 0], [0, 0, 0], [0, 0, -50]],
-    [[0, 0, 0], [+40, 0, 0], [0, 0, 0]]]
+    [[0, 0, 0], [+40, 0, 0], [0, 0, 0]]] 
 possible_actions = [[0, 1, 2], [0, 2], [1]]
 
 Q_values = np.full((3, 3), -np.inf)  # -np.inf for impossible actions

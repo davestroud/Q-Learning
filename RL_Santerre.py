@@ -36,7 +36,7 @@ model = Sequential()
 model.add(Dense(hidden_size, input_shape=(len(target),), activation='relu'))
 model.add(Dense(hidden_size, activation='elu'))
 model.add(Dense(num_targets, activation='softmax'))
-model.compile(loss='categorical_crossentropy', optimizer=Adam(lr=0.001))
+model.compile(loss='categorical_crossentropy', optimizer=Adam(lr=0.001)) # lets adjust the learning rate
 
 
 def guess_number(model, guess_vec):
