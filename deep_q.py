@@ -1,4 +1,4 @@
-from collections import deque #used for replay memory
+from collections import deque  # used for replay memory
 import tensorflow as tf
 import numpy as np  # Python ≥3.5 is required
 import matplotlib.animation as animation
@@ -9,7 +9,7 @@ from tensorflow import keras
 import tensorflow as tf
 import sklearn
 import sys
-import gym # access to ai_gym library
+import gym  # access to ai_gym library
 assert sys.version_info >= (3, 5)
 
 
@@ -59,6 +59,7 @@ def plot_animation(frames, repeat=False, interval=40):
     plt.close()
     return anim
 
+
 # Good practice to clear any previous tf session
 keras.backend.clear_session()
 tf.random.set_seed(42)
@@ -66,8 +67,8 @@ np.random.seed(42)
 
 
 # You need a neural net that takes a state-action pair
-# and outputs an approximate Q-Value. 
-# For this example, we use a neural net that takes a 
+# and outputs an approximate Q-Value.
+# For this example, we use a neural net that takes a
 # state and outputs one approximate Q-Value for each possible action.
 env = gym.make("CartPole-v1")
 input_shape = [4]  # == env.observation_space.shape
@@ -80,21 +81,25 @@ model = keras.models.Sequential([
     keras.layers.Dense(n_outputs)
 ])
 
-# To select an action using this DQN, we pick the action with the 
+# To select an action using this DQN, we pick the action with the
 # largest predicted Q-Value. We use the e-greedy policy to ensure
 # that the agent explores the environment.
+
+
 def epsilon_greedy_policy(state, epsilon=0):
     if np.random.rand() < epsilon:
         return np.random.randint(2)
     else:
-        Q_values = model.predict(state[np.newaxis]) # used to increase dim of existing array by one more dim
-        return np.argmax(Q_values[0]) # Returns indices of max element of array in a particular axis
+        # used to increase dim of existing array by one more dim
+        Q_values = model.predict(state[np.newaxis])
+        # Returns indices of max element of array in a particular axis
+        return np.argmax(Q_values[0])
 
 
-# we store all of the training experiences of the DQN and 
-# store them in a replay buffer. We will sample a random 
-# training batch from it at each training iteration. 
-# This helps reduce the correlations between experiences in 
+# we store all of the training experiences of the DQN and
+# store them in a replay buffer. We will sample a random
+# training batch from it at each training iteration.
+# This helps reduce the correlations between experiences in
 # a batch. A deque list is used for the process
 replay_memory = deque(maxlen=2000)
 
@@ -108,9 +113,11 @@ replay_memory = deque(maxlen=2000)
         - a Boolean indicating whether the episode ended at that point (done).
 """
 
-# Sample a random batch of experiences from the replay buffer. 
-# This fuction will return five NumPy arrays corresponding to 
-# the five experience elements. 
+# Sample a random batch of experiences from the replay buffer.
+# This fuction will return five NumPy arrays corresponding to
+# the five experience elements.
+
+
 def sample_experiences(batch_size):
     indices = np.random.randint(len(replay_memory), size=batch_size)
     batch = [replay_memory[index] for index in indices]
@@ -119,13 +126,16 @@ def sample_experiences(batch_size):
         for field_index in range(5)]
     return states, actions, rewards, next_states, dones
 
-# Create a function that will play a single step using the e-greedy policy. 
+# Create a function that will play a single step using the e-greedy policy.
 # Store the resulting experience in the replay buffer
+
+
 def play_one_step(env, state, epsilon):
     action = epsilon_greedy_policy(state, epsilon)
     next_state, reward, done, info = env.step(action)
     replay_memory.append((state, action, reward, next_state, done))
     return next_state, reward, done, info
+
 
 # Define hyperparameters
 # Create optimizer and loss function
@@ -139,25 +149,27 @@ loss_fn = keras.losses.mean_squared_error
 
     starts by sampling a batch of experiences, then uses the DQN
     to predict the Q-Value for each possible action in each experiences
-    next state. 
-    Assuming the agent with play optimally, we only keep the maximum Q-Value 
+    next state.
+    Assuming the agent with play optimally, we only keep the maximum Q-Value
     for each next state.
     Next, use the Target Q-Value function to compute the target Q-Value
-    for each experiences state-action pair. 
+    for each experiences state-action pair.
 
     Next, use the DQN to compute the Q-Value for each experienced state-action pair.
-    This results in the DQN outputting the Q-Values for the other possible actions, 
-    not just for the action that was chosen by the agent. Thus, we need to mask out 
-    all of the Q-Values that we don't need. The tf.one_hot() function makes it easy 
+    This results in the DQN outputting the Q-Values for the other possible actions,
+    not just for the action that was chosen by the agent. Thus, we need to mask out
+    all of the Q-Values that we don't need. The tf.one_hot() function makes it easy
     to convert an array of action indices into such a mask.
 
-    Next, we compute the lost: it is the mean squared error between the target and 
+    Next, we compute the lost: it is the mean squared error between the target and
     predicted Q-Values for the experienced state-action pairs.
 
-    Finally, we perform a Gradient Descent step to minimize the loss with regard to 
+    Finally, we perform a Gradient Descent step to minimize the loss with regard to
     the model's trainable variables.
 
 """
+
+
 def training_step(batch_size):
     experiences = sample_experiences(batch_size)
     states, actions, rewards, next_states, dones = experiences
@@ -183,20 +195,19 @@ rewards = []
 best_score = 0
 
 
-
 """
      Train the model
-        We run 600 episodes, each with a maximum of 200 steps. At each step, we 
+        We run 600 episodes, each with a maximum of 200 steps. At each step, we
         first compute the epsilon value for the e greedy policy: it goes from 1
         down to 0.01, linearly, in a bit under 500 episodes
 
-        Next, call the play_one_step function, which will use the e-greedy policy 
+        Next, call the play_one_step function, which will use the e-greedy policy
         to pick an action, then execute it and record the experience in the replay buffer.
 
         If the episode is done, we exit the loop.
 
         Finally, if we are past the 50th episode, we call the training_step() function
-        to train the model on one branch sample from the replay buffer. 
+        to train the model on one branch sample from the replay buffer.
  """
 
 
@@ -207,13 +218,13 @@ for episode in range(600):
         obs, reward, done, info = play_one_step(env, obs, epsilon)
         if done:
             break
-    rewards.append(step)  
-    if step > best_score: 
-        best_weights = model.get_weights()  
-        best_score = step  
+    rewards.append(step)
+    if step > best_score:
+        best_weights = model.get_weights()
+        best_score = step
     print("\rEpisode: {}, Steps: {}, eps: {:.3f}".format(
-        episode, step + 1, epsilon), end="")  
-    if episode > 50: # Gives the replay buffer time to fill up
+        episode, step + 1, epsilon), end="")
+    if episode > 50:  # Gives the replay buffer time to fill up
         training_step(batch_size)
 
 model.set_weights(best_weights)

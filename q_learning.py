@@ -93,6 +93,7 @@ def step(state, action):
     probas = transition_probabilities[state][action]
     next_state = np.random.choice([0, 1, 2], p=probas)
     reward = rewards[state][action][next_state]
+    import pdb; pdb.set_trace()
     return next_state, reward
 
 
