@@ -58,4 +58,4 @@ for epoch in range(epochs):
     model.train_on_batch(M, L)
     if len(history)>max_hist:
       del history[0]
-import pdb; pdb.set_trace()
+# import pdb; pdb.set_trace()

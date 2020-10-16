@@ -52,3 +52,10 @@ class ReplayMemory(object):
 
     def __len__(self):
         return len(self.memory)
+
+class DQN(nn.Module):
+
+    def __init__(self, h, w, outputs):
+        super(DQN, self).__init__()
+        self.conv1 = nn.Conv2d(3, 16, kernel_size=5, stride=2)
+        
