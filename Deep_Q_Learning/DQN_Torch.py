@@ -15,6 +15,8 @@ import torch.nn.functional as F
 import torchvision.transforms as T
 
 
+
+
 env = gym.make('CartPole-v0').unwrapped
 
 # set up matplotlib
@@ -24,6 +26,9 @@ if is_ipython:
 
 plt.ion()
 
+# A named tuple representing a single transition in our enviroment. 
+# It maps (state, action) pairs to their (next_state,reward) result
+# with the state being the screen difference image.
 Transition = namedtuple('Transition',
                         ('state', 'action', 'next_state', 'reward'))
 
