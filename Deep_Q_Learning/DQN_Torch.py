@@ -13,7 +13,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 import torchvision.transforms as T
-(breakpoint())
+
 
 env = gym.make('CartPole-v0').unwrapped
 
@@ -23,3 +23,7 @@ if is_ipython:
     from IPython import display
 
 plt.ion()
+
+Transition = namedtuple('Transition',
+                        ('state', 'action', 'next_state', 'reward'))
+
